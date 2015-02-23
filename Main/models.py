@@ -57,5 +57,6 @@ class Track(models.Model):
 class UserMusic(models.Model): # This model store user's music
     user = models.OneToOneField(User)
 
+
     def __unicode__(self):
         return self.user.username
