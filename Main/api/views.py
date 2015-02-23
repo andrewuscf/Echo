@@ -2,9 +2,8 @@ from django.contrib.auth.models import User
 from friendship.models import Friend, FriendshipRequest
 from rest_framework import viewsets
 from rest_framework.generics import ListAPIView
-# from Main.api.serializers import UserSerializer, TrackSerializer, AlbumSerializer, PlaylistSerializer, \
-#     UserMusicSerializer, FriendSerializer, FriendshipRequestSerializer
-from Main.api.serializers import UserSerializer
+from Main.api.serializers import UserSerializer, TrackSerializer, AlbumSerializer, PlaylistSerializer, \
+    UserMusicSerializer, FriendSerializer, FriendshipRequestSerializer
 from Main.models import Track, Album, Playlist, UserMusic
 
 
