@@ -2,3 +2,4 @@ django
 pillow
 psycopg2
 django-friendship
+djangorestframework
