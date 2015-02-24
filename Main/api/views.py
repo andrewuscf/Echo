@@ -5,8 +5,8 @@ from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
 from Main.api.permissions import IsOwnerOrReadOnly, IsMainFriendOrReadOnly
 from Main.api.serializers import UserSerializer, TrackSerializer, AlbumSerializer, PlaylistSerializer, \
-    UserMusicSerializer, FriendSerializer, FriendshipRequestSerializer
-from Main.models import Track, Album, Playlist, UserMusic
+    UserMusicSerializer, FriendSerializer, FriendshipRequestSerializer, UserPlaylistTrackSerializer
+from Main.models import Track, Album, Playlist, UserMusic, UserPlaylistTrack
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -59,6 +59,12 @@ class FriendshipRequestViewSet(viewsets.ModelViewSet):
     queryset = FriendshipRequest.objects.all()
     serializer_class = FriendshipRequestSerializer
 
+
+class UserPlaylistTrackViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsOwnerOrReadOnly]
+
+    queryset = UserPlaylistTrack.objects.all()
+    serializer_class = UserPlaylistTrackSerializer
 
 # class UserListAPIView(ListAPIView):
 #     model = User

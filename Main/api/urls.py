@@ -12,6 +12,7 @@ router.register(r'playlist', views.PlaylistViewSet)
 router.register(r'user_music', views.UserMusicViewSet)
 router.register(r'friend', views.FriendViewSet)
 router.register(r'friendship_request', views.FriendshipRequestViewSet)
+router.register(r'play_track', views.UserPlaylistTrackViewSet)
 
 # Wire up API using automatic URL routing.
 # Additionally, include login URLs for the browsable API
