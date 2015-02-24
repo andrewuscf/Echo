@@ -58,7 +58,7 @@ WSGI_APPLICATION = 'Echo.wsgi.application'
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.BasePermission',),
     'PAGINATE_BY': 10
 }
 
