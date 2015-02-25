@@ -11,6 +11,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
         return obj.user == request.user
 
+
 class IsMainFriendOrReadOnly(permissions.BasePermission):
     # Allows user (you) to edit friend and friend request objects
     # Forbids other users from editing, but allows them to view friends
@@ -24,3 +25,11 @@ class IsMainFriendOrReadOnly(permissions.BasePermission):
                 return True
 
             return obj.from_user == request.user
+
+
+class IsOwnerOnly(permissions.BasePermission):
+    # Only allows the user associated with object to view or edit
+
+    def has_object_permission(self, request, view, obj):
+
+        return obj.user == request.user

@@ -67,3 +67,7 @@ class UserPlaylistTrack(models.Model):
 
     def __unicode__(self):
         return ("Track:" + self.track.name + " | Playlist: " + self.playlist.title + " | User: " + self.playlist.user.username)
+
+class UserPicture(models.Model):
+    user = models.OneToOneField(User)
+    imageurl = models.CharField(max_length=255)
