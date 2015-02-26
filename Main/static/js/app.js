@@ -46,7 +46,10 @@ echoApp.config(['$httpProvider', function($httpProvider){
                     then(function(data){
                         // on good username and password
                         $scope.user = data.username;
+                        $scope.id = data.id;
                         $location.path('/main');
+                        $rootScope.username = $scope.user;
+                        $rootScope.id = $scope.id;
                     }).
                     catch(function(data){
                         // on incorrect username and password
@@ -95,25 +98,27 @@ echoApp.config(['$routeProvider' ,function($routeProvider) {
 
 }]);
 
- echoApp.controller('EchoAppCtrl',function($scope, $http, $rootScope) {
+ echoApp.controller('EchoAppCtrl',function($scope, $http ) {
      var friendSort = function(data) {
          var userlog = null;
          var friend = null;
          var obj_test = data;
 
-         console.log(obj_test.results);
+         //console.log(obj_test.results);
 
      };
+     $scope.usernamefinal= $scope.username;
+     $scope.idfinal = $scope.id;
 
      $http.get('api/user/').success(function (data) {
          //$scope.name = $rootScope.user;
-         $scope.name = data;
-         console.log($scope.name)
+         $scope.name1 = data;
+         console.log($scope.name1)
      });
      $http.get('api/friend/').success(function (data) {
          $scope.friends = data;
          $scope.friendslist = friendSort(data);
-         console.log($scope.friendslist)
+         //console.log($scope.friendslist)
      });
 });
 
