@@ -1,4 +1,3 @@
- var echoApp = angular.module('echoApp', ['ngRoute', 'ngResource']);
 
 echoApp.config(['$httpProvider', function($httpProvider){
         // django and angular both support csrf tokens. This tells
@@ -24,17 +23,17 @@ echoApp.config(['$httpProvider', function($httpProvider){
                 login: {method: 'POST', transformRequest: add_auth_header},
                 logout: {method: 'DELETE'}
             }),
-            users: $resource('/api/user\\/', {}, {
+            users: $resource('/api/users\\/', {}, {
                 create: {method: 'POST'}
             })
         };
     }).
-     controller('authController', function($scope, api, $location, $rootScope) {
+    controller('authController', function($scope, api) {
         // Angular does not detect auto-fill or auto-complete. If the browser
         // autofills "username", Angular will be unaware of this and think
         // the $scope.username is blank. To workaround this we use the
         // autofill-event polyfill [4][5]
-        //$('#id_auth_form input').checkAndTriggerAutoFillEvent();
+        $('#id_auth_form input').checkAndTriggerAutoFillEvent();
 
         $scope.getCredentials = function(){
             return {username: $scope.username, password: $scope.password};
@@ -46,7 +45,6 @@ echoApp.config(['$httpProvider', function($httpProvider){
                     then(function(data){
                         // on good username and password
                         $scope.user = data.username;
-                        $location.path('/main');
                     }).
                     catch(function(data){
                         // on incorrect username and password
@@ -57,7 +55,6 @@ echoApp.config(['$httpProvider', function($httpProvider){
         $scope.logout = function(){
             api.auth.logout(function(){
                 $scope.user = undefined;
-                $location.path('/');
             });
         };
         $scope.register = function($event){
@@ -68,56 +65,7 @@ echoApp.config(['$httpProvider', function($httpProvider){
                 $promise.
                     then($scope.login).
                     catch(function(data){
-                        alert("Someone has that username already!");
+                        alert(data.data.username);
                     });
             };
-
-
     });
-
-
-
-
-
-
-
-
-echoApp.config(['$routeProvider' ,function($routeProvider) {
-    $routeProvider.
-        when('/', {
-            templateUrl: '/static/views/base.html',
-            controller: 'authController'
-        }).
-        when('/main', {
-            templateUrl: '/static/views/MainPage.html',
-            controller: 'EchoAppCtrl'
-        });
-
-}]);
-
- echoApp.controller('EchoAppCtrl',function($scope, $http, $rootScope) {
-     var friendSort = function(data) {
-         var userlog = null;
-         var friend = null;
-         var obj_test = data;
-
-         console.log(obj_test.results);
-
-     };
-
-     $http.get('api/user/').success(function (data) {
-         //$scope.name = $rootScope.user;
-         $scope.name = data;
-         console.log($scope.name)
-     });
-     $http.get('api/friend/').success(function (data) {
-         $scope.friends = data;
-         $scope.friendslist = friendSort(data);
-         console.log($scope.friendslist)
-     });
-});
-
- echoApp.controller('EchoController', function ($scope, $http) { // calling the app controller up to the http
-
- });
-

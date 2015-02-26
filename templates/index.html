@@ -1,0 +1,91 @@
+{% load staticfiles %}
+<!DOCTYPE html >
+<html>
+<head lang="en">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base href="/"/>
+    <title></title>
+     <link rel="stylesheet" type="text/css" href="{% static "bootstrapcss/bootstrap.css" %}">
+</head>
+<body ng-app="echoApp">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                {% verbatim %}
+                <a class="navbar-brand" ui-sref="users">The Movie App</a>
+            {% endverbatim %}
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a ui-sref="users">Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row top-buffer">
+            <div class="col-xs-8 col-xs-offset-2">
+                <div ui-view></div>
+                <table class="table movietable">
+    <tr>
+        <td><h3>All Movies</h3></td>
+        <td></td>
+    </tr>
+    <tr ng-repeat="user in users">
+        <td>{{user.username}}</td>
+        <td>
+            <a class="btn btn-primary" ui-sref="viewMovie({id:movie._id})">View</a>
+            <a class="btn btn-danger"  ng-click="deleteMovie(movie)">Delete</a>
+        </td>
+    </tr>
+</table>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+
+ <script src="{% static "angularjs/angular.min.js" %}"></script>
+ <script src="{% static "angularjs/angular-resource.js" %}"></script>
+ <script src="{% static "angularjsapp/app2.js" %}"></script>
+ <script src="{% static "angularjsapp/controllers.js" %}"></script>
+ <script src="{% static "angularjsapp/services.js" %}"></script>
+ <script src="{% static "angularjs/resource2.js" %}"></script>
+ <script src="{% static "angularjs/angular.min.js.map" %}"></script>
+ <script src="{% static "angularjs/angular-resource.min.js.map" %}"></script>
+ <script src="{% static "angularjs/angular-ui-router.js" %}"></script>
+
+
+</html>
+    <div class="navbar navbar-fixed-bottom" ng-init="user='{{user.username}}'" >
+        <div class="navbar-form navbar-right">
+            <input type="submit" class="btn btn-default" ng-click="logout()"
+                   value="logout {{user}}"/>
+        </div>
+        <div>
+            <form id="id_auth_form" class="navbar-form navbar-right"
+                  ng-submit="login()">
+                <div class="form-group">
+                    <input ng-model="username" required name="username"
+                           type="text" placeholder="username" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input ng-model="password" required name="password" type="password"
+                           placeholder="password" class="form-control">
+                </div>
+                <div class="btn-group">
+                    <input type="submit" class="btn btn-default" value="login">
+                    <input type="submit" class="btn btn-default" value="register"
+                           ng-click="register($event)">
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
+

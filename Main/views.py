@@ -5,7 +5,9 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
 
 
-def home(request):
-    return render(request, 'MainPage.html')
+def home(request, template='base.html'):
+    return render(request, template)
 
+def main(request, template='MainPage.html'):
+    return render(request, template)
 

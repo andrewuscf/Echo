@@ -28,6 +28,7 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -38,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.auth.hashers',
     'Main',
     'friendship'
 )
@@ -67,9 +69,16 @@ REST_FRAMEWORK = {
 
 DATABASES = {
     'default': {
-
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'echo',
     }
 }
+
+try:
+    from Echo.Echo.local_settings import *
+except ImportError:
+    pass
+
 
 
 # Internationalization
@@ -94,8 +103,3 @@ STATIC_URL = '/static/'
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
 )
-
-try:
-    from local_settings import *
-except ImportError:
-    pass

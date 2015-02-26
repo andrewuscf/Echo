@@ -1,0 +1,65 @@
+{% load staticfiles  %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+     <link rel="stylesheet" type="text/css" href="{% static "bootstrapcss/bootstrap-theme.css.map" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "bootstrapcss/bootstrap.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "bootstrapcss/bootstrap-theme.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "bootstrapcss/bootstrap-theme.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "bootstrapcss/bootstrap.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "bootstrapcss/simple-sidebar.css"%}">
+    <style>.span3 {  height: 300px !important;  overflow: scroll;}</style>
+    {% block head %}{% endblock %}
+</head>
+<body ng-app="myApp">
+<div class="content" ng-controller="MainCtrl">
+
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="">Echo</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Profile</a></li>
+                            <li role="presentation" class="divider"></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Settings</a></li>
+                            <li role="presentation" class="divider"></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Log Out</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+
+
+
+</div> {# <-- Dont Fucking touch this line -->#}
+    <script src="{% static "angularjs/angular.min.js" %}"></script>
+    <script src="{% static "angularjs/JqueryDropdown.js" %}"></script>
+     <script src="{% static "angularjs/jquery.js" %}"></script>
+    <script src="{% static "angularjs/bootstrap.min.js" %}"></script>
+    <script src="{% static "angularjs/jquery.easing.min.js" %}"></script>
+    <script src="{% static "js/JqueryDropdown.js" %}"></script>
+    <script src="{% static "js/app.js" %}"></script>
+    <script src="{% static "js/pages.js" %}"></script>
+</body>
+</html>

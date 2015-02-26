@@ -1,0 +1,135 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand">Echo</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Profile</a></li>
+                            <li role="presentation" class="divider"></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Settings</a></li>
+                            <li role="presentation" class="divider"></li>
+                        <li role="presentation"><input type="submit" role="menuitem" tabindex="-1"
+                              class="btn btn-default" ng-click="logout()" value="logout {{user}}"/>
+                        </li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+        <div class="row row-left">
+          <div id="sidebar">
+              <div class="col-md-3">
+                <ul class="sidebar-nav" >
+                    <li class="sidebar-brand" ng-init="name='{{name.username}}'">
+                        <h1> Username </h1>
+                    </li>
+                    <li>
+                        <a href="#">Find Friends:</a>
+                        <form role="search">
+                            <div class="form-group">
+                              <input type="text" class="form-control" placeholder="Search">
+                            </div>
+                        <button type="submit" class="btn btn-default">Search</button>
+                        </form>
+                    </li>
+                    <li>
+                        <a>Contacts</a>
+                           <div class="span3">
+                                <table class="table">
+                                  <tbody>
+                                    <tr>
+                                      <td>
+                                         <div class="media">
+                                            <div class="media-left media-middle">
+                                                <a href="#">
+                                            <img class="media-object" alt="" height="40px" width="40px" >
+                                            </a>
+                                            </div>
+                                            <div class="media-body">
+                                            <h4 class="media-heading">{{ info.username }}</h4>
+                                            <p>The sexiest Friend ever</p>
+                                            </div>
+                                         </div>
+                                      </td>
+                                    </tr>
+
+                                  </tbody>
+                                </table>
+                            </div>
+                    </li>
+                </ul>
+              </div>
+        </div>
+
+
+                <div class="col-md-6">
+                    <div class="jumbotron">
+                         <h1>Hello, world!</h1>
+
+                        <p>This is a template for a simple marketing or informational website. It
+                            includes a large callout called the hero unit and three supporting pieces
+                            of content. Use it as a starting point to create something more unique.</p>
+                        <p><a class="btn btn-primary btn-lg">Learn more »</a>
+                        </p>
+                        <p>This is a template for a simple marketing or informational website. It
+                            includes a large callout called the hero unit and three supporting pieces
+                            of content. Use it as a starting point to create something more unique.</p>
+                        <p><a class="btn btn-primary btn-lg">Learn more »</a>
+                        </p>
+                        <p>This is a template for a simple marketing or informational website. It
+                            includes a large callout called the hero unit and three supporting pieces
+                            of content. Use it as a starting point to create something more unique.</p>
+                        <p><a class="btn btn-primary btn-lg">Learn more »</a>
+                        </p>
+                        <p>This is a template for a simple marketing or informational website. It
+                            includes a large callout called the hero unit and three supporting pieces
+                            of content. Use it as a starting point to create something more unique.</p>
+                        <p><a class="btn btn-primary btn-lg">Learn more »</a>
+                        </p>
+                    </div>
+
+                </div>
+                <!--/span-->
+                <div class="col-md-3">
+                    <div class="sidebar-nav-fixed pull-right affix">
+                        <div class="well">
+                            <ul class="nav ">
+                                <li class="nav-header">Sidebar</li>
+                                <li class="active"><a href="#">Link</a>
+                                </li>
+                                <li><a href="#">LinkFFfffffffffffffffffffffff</a>
+                                </li>
+                                <li><a href="#">Link</a>
+
+                            </ul>
+                        </div>
+                        <!--/.well -->
+                    </div>
+                    <!--/sidebar-nav-fixed -->
+                </div>
+                <!--/span-->
+            <!--/row-->
+
+            </div>
+        </div>
+
+
+
+
+
+
+

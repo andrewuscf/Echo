@@ -1,22 +1,27 @@
 from django.contrib.auth.models import User
 from friendship.models import Friend, FriendshipRequest
 from rest_framework import viewsets
-from rest_framework.generics import ListAPIView
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from . import authentication, serializers
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
-from Main.api.permissions import IsOwnerOrReadOnly, IsMainFriendOrReadOnly, IsOwnerOnly
+from django.contrib.auth import login, logout
+from Main.api.permissions import IsOwnerOrReadOnly, IsMainFriendOrReadOnly
 from Main.api.serializers import UserSerializer, TrackSerializer, AlbumSerializer, PlaylistSerializer, \
-    UserMusicSerializer, FriendSerializer, FriendshipRequestSerializer, UserPlaylistTrackSerializer, \
-    UserPictureSerializer
-from Main.models import Track, Album, Playlist, UserMusic, UserPlaylistTrack, UserPicture
+    UserMusicSerializer, FriendSerializer, FriendshipRequestSerializer
+from Main.models import Track, Album, Playlist, UserMusic
+from rest_framework.permissions import AllowAny
+from .permissions import IsStaffOrTargetUser
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAdminUser]
-    '''
-    API endpoint, allows users to be viewed or edited
-    '''
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+    def get_permissions(self):
+    # allow non-authenticated user to create via POST
+        return (AllowAny() if self.request.method == 'POST' or "GET"
+            else IsStaffOrTargetUser()),
 
 
 class TrackViewSet(viewsets.ModelViewSet):
@@ -61,18 +66,17 @@ class FriendshipRequestViewSet(viewsets.ModelViewSet):
     serializer_class = FriendshipRequestSerializer
 
 
-class UserPlaylistTrackViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsOwnerOrReadOnly]
+class AuthView(APIView):
+    authentication_classes = (authentication.QuietBasicAuthentication,)
+    serializer_class = serializers.UserSerializer
 
-    queryset = UserPlaylistTrack.objects.all()
-    serializer_class = UserPlaylistTrackSerializer
+    def post(self, request, *args, **kwargs):
+         login(request, request.user)
+         return Response(UserSerializer(request.user).data)
 
-
-class UserPictureViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsOwnerOnly]
-
-    queryset = UserPicture.objects.all()
-    serializer_class = UserPictureSerializer
+    def delete(self, request, *args, **kwargs):
+        logout(request)
+        return Response({})
 
 # class UserListAPIView(ListAPIView):
 #     model = User

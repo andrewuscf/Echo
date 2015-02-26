@@ -59,15 +59,3 @@ class UserMusic(models.Model): # This model store user's music
 
     def __unicode__(self):
         return self.user.username
-
-class UserPlaylistTrack(models.Model):
-    track = models.ForeignKey(Track)
-    playlist = models.OneToOneField(Playlist)
-    order = models.SmallIntegerField(default=1)
-
-    def __unicode__(self):
-        return ("Track:" + self.track.name + " | Playlist: " + self.playlist.title + " | User: " + self.playlist.user.username)
-
-class UserPicture(models.Model):
-    user = models.OneToOneField(User)
-    imageurl = models.CharField(max_length=255)
