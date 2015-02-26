@@ -33,6 +33,7 @@ class IsStaffOrTargetUser(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         # allow logged in user to view own details, allows staff to view all records
+        # Since objects, in this case, are users, check obj == request.user
         return request.user.is_staff or obj == request.user
 
 class IsAdminOrPostOnly(permissions.BasePermission):
@@ -40,3 +41,8 @@ class IsAdminOrPostOnly(permissions.BasePermission):
         if request.method == "POST":
             return True
         return request.user.is_staff()
+
+
+class IsOwnerOnly(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return request.user.is_staff or request.user == obj.user

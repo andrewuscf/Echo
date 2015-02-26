@@ -24,7 +24,7 @@ from django.utils import timezone
 class Album(models.Model):
     name = models.CharField(max_length=128)
     artist = models.CharField(max_length=128)
-    image = models.URLField()
+    image = models.URLField(blank=True)
     views = models.IntegerField(default=0)
     likes = models.IntegerField(default=0)
     type = models.CharField(default='album', max_length=128)
@@ -34,7 +34,7 @@ class Album(models.Model):
 
 
 class Playlist(models.Model):
-    title = models.CharField(max_length=128)
+    title = models.CharField(max_length=128, default="untitled playlist")
     user = models.ForeignKey(User)  # Playlist created by
     type = models.CharField(default='playlist', max_length=128)
 
@@ -45,8 +45,8 @@ class Playlist(models.Model):
 class Track(models.Model):
     name = models.CharField(max_length=128)
     source = models.CharField(max_length=128)
-    album = models.ForeignKey(Album)
-    previewURL = models.URLField(blank=True)
+    album = models.ForeignKey(Album, null=True, blank=True)
+    previewURL = models.URLField(blank=True,null=True)
     playlists = models.ManyToManyField(Playlist, blank=True)
     type = models.CharField(default='track', max_length=128)
 
@@ -54,8 +54,26 @@ class Track(models.Model):
         return self.name
 
 
-class UserMusic(models.Model): # This model store user's music
+class UserPlaylistTrack(models.Model):
+    playlist = models.ForeignKey(Playlist)
+    track = models.OneToOneField(Track)
+
+    def __unicode__(self):
+        return ("Playlist: " + self.playlist.title + " User: " + self.playlist.user.username + " Track: " + self.track.name)
+
+
+class UserPicture(models.Model):
     user = models.OneToOneField(User)
+    img = models.ImageField(default="example.jpg")
 
     def __unicode__(self):
         return self.user.username
+
+
+class UserStatus(models.Model):
+    user = models.OneToOneField(User)
+    is_online = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return "User " + self.user.username + " is online: " + "{}".format(self.is_online)
+
