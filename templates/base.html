@@ -19,6 +19,23 @@
     <link rel="stylesheet" type="text/css" href="{% static "bootstrapcss/simple-sidebar.css"%}">
     <style>.span3 {  height: 300px !important;  overflow: scroll;}</style>
 
+    <!--Soundcloud-->
+    <script src="http://connect.soundcloud.com/sdk.js"></script>
+
+
+    <script>
+SC.initialize({
+  client_id: 'd83091cbba0757deb503045103d3e136',
+  redirect_uri: 'http://127.0.0.1:8000/#/main'
+});
+
+// initiate auth popup
+SC.connect(function() {
+  SC.get('/me', function(me) {
+    alert('Hello, ' + me.username);
+  });
+});
+</script>
 
     <script src="{% static "angularjs/angular.min.js" %}"></script>
     <script src="{% static "angularjs/jquery.js" %}"></script>
@@ -33,7 +50,10 @@
     <script src="{% static "bower_components/angular-resource/angular-resource.js"%}"></script>
     <script src="{% static "bower_components/angular-cookies/angular-cookies.js" %}"></script>
 
+    <!--FIREBASE STUFF-->
 
+    <script src="https://cdn.firebase.com/v0/firebase.js"></script>
+                    <script src="https://cdn.firebase.com/libs/angularfire/0.5.0/angularfire.min.js"></script>
 
 
     <!-- NEW SHIT -->

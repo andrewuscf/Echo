@@ -1,4 +1,4 @@
- var echoApp = angular.module('echoApp', ['ngRoute', 'ngResource', 'ngCookies', 'audioPlayer-directive']);
+ var echoApp = angular.module('echoApp', ['ngRoute', 'ngResource', 'ngCookies', 'audioPlayer-directive', 'firebase']);
 
 echoApp.config(['$httpProvider', function($httpProvider){
         // django and angular both support csrf tokens. This tells
@@ -141,6 +141,7 @@ echoApp.config(['$routeProvider' ,function($routeProvider) {
 
     // Here we get the cookie that we PUT, back in line 54
     $scope.username = ($cookieStore.get('username'));
+    // Populates the friend sidebar with all of your friends
     $http.get('/api/friend/?search='+$scope.username).
         success(function(data, status, headers, config) {
             //console.log(data.results);
@@ -155,8 +156,23 @@ echoApp.config(['$routeProvider' ,function($routeProvider) {
                         })
                 }
         });
-     $scope.numbers=[1,2,3,4,5];
-    console.log($scope.numbers);
+     var frReq = [];
+     $scope.friendRequests = [];
+     $http.get('/api/friendship_request/?search='+$scope.username).
+        success(function(data, status, headers, config) {
+            //console.log(data.results);
+                for (var i=0; i < data.results.length; i ++) {
+                    //console.log(data.results[i].to_user);
+                    $http.get('/api/user/'+ data.results[i].to_user).
+                        success(function(data, status, headers, config) {
+                            //console.log(data.username);
+                            fr.push(data);
+                            $scope.friends = fr;
+                            //console.log($scope.friends);
+                        })
+                }
+        });
+
 
      // Daniel's stuff END
 
@@ -174,42 +190,92 @@ echoApp.config(['$routeProvider' ,function($routeProvider) {
          //console.log($scope.friendslist)
      });
 
-     echoApp.directive('audioPlayer', function($rootScope) {
-        return {
-            restrict: 'E',
-            scope: {},
-            controller: function($scope, $element) {
-                $scope.audio = new Audio();
-                $scope.currentNum = 0;
+     function loadScript(url, callback) {
+        // Adding the script tag to the head as suggested before
+        var head = document.getElementsByTagName('head')[0];
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = url;
 
-                // tell others to give me my prev/next track (with audio.set message)
-                $scope.next = function(){ $rootScope.$broadcast('audio.next'); };
-                $scope.prev = function(){ $rootScope.$broadcast('audio.prev'); };
+    // Then bind the event to the callback function.
+    // There are several events for cross browser compatibility.
+        script.onreadystatechange = callback;
+        script.onload = callback;
 
-                // tell audio element to play/pause, you can also use $scope.audio.play() or $scope.audio.pause();
-                $scope.playpause = function(){ var a = $scope.audio.paused ? $scope.audio.play() : $scope.audio.pause(); };
+        // Fire the loading
+        head.appendChild(script);
+}
 
-                // listen for audio-element events, and broadcast stuff
-                $scope.audio.addEventListener('play', function(){ $rootScope.$broadcast('audio.play', this); });
-                $scope.audio.addEventListener('pause', function(){ $rootScope.$broadcast('audio.pause', this); });
-                $scope.audio.addEventListener('timeupdate', function(){ $rootScope.$broadcast('audio.time', this); });
-                $scope.audio.addEventListener('ended', function(){ $rootScope.$broadcast('audio.ended', this); $scope.next(); });
+      $scope.music = function() {
 
-                // set track & play it
-                $rootScope.$on('audio.set', function(r, file, info, currentNum, totalNum){
-                    var playing = !$scope.audio.paused;
-                    $scope.audio.src = file;
-                    var a = playing ? $scope.audio.play() : $scope.audio.pause();
-                    $scope.info = info;
-                    $scope.currentNum = currentNum;
-                    $scope.totalNum = totalNum;
-                });
+        SC.initialize({
+        client_id: 'd83091cbba0757deb503045103d3e136'
+       });
 
-                // update display of things - makes time-scrub work
-                setInterval(function(){ $scope.$apply(); }, 500);
-            }
-        };
+        SC.get('/tracks', { q: $scope.searchQuery, limit: 3}, function(tracks) {
+        $scope.searchResults = tracks;
+        console.log(tracks);
     });
+};
+
+    loadScript("http://connect.soundcloud.com/sdk.js");
+
+        $scope.musicSong = "https://w.soundcloud.com/player/?url=https://soundcloud.com/kyaryfan/kyary-pamyu-pamyu-mondai-girl-preview-1";
+        $scope.playSong = function(id) {
+            alert(id);
+            $scope.musicSong = "https://w.soundcloud.com/player/?url=" + id
+    };
+         echoApp.directive('dynamic', function(AmazonService, $compile) {
+            return {
+            restrict: 'E',
+            link: function(scope, element, attrs) {
+            AmazonService.getHTML()
+            .then(function(result){
+            element.replaceWith($compile(result.data)(scope));
+            })
+            .catch(function(error){
+           console.log(error);
+         });
+       }
+     };
+    });
+
+    // echoApp.directive('audioPlayer', function($rootScope) {
+    //    return {
+    //        restrict: 'E',
+    //        scope: {},
+    //        controller: function($scope, $element) {
+    //            $scope.audio = new Audio();
+    //            $scope.currentNum = 0;
+    //
+    //            // tell others to give me my prev/next track (with audio.set message)
+    //            $scope.next = function(){ $rootScope.$broadcast('audio.next'); };
+    //            $scope.prev = function(){ $rootScope.$broadcast('audio.prev'); };
+    //
+    //            // tell audio element to play/pause, you can also use $scope.audio.play() or $scope.audio.pause();
+    //            $scope.playpause = function(){ var a = $scope.audio.paused ? $scope.audio.play() : $scope.audio.pause(); };
+    //
+    //            // listen for audio-element events, and broadcast stuff
+    //            $scope.audio.addEventListener('play', function(){ $rootScope.$broadcast('audio.play', this); });
+    //            $scope.audio.addEventListener('pause', function(){ $rootScope.$broadcast('audio.pause', this); });
+    //            $scope.audio.addEventListener('timeupdate', function(){ $rootScope.$broadcast('audio.time', this); });
+    //            $scope.audio.addEventListener('ended', function(){ $rootScope.$broadcast('audio.ended', this); $scope.next(); });
+    //
+    //            // set track & play it
+    //            $rootScope.$on('audio.set', function(r, file, info, currentNum, totalNum){
+    //                var playing = !$scope.audio.paused;
+    //                $scope.audio.src = file;
+    //                var a = playing ? $scope.audio.play() : $scope.audio.pause();
+    //                $scope.info = info;
+    //                $scope.currentNum = currentNum;
+    //                $scope.totalNum = totalNum;
+    //            });
+    //
+    //            // update display of things - makes time-scrub work
+    //            setInterval(function(){ $scope.$apply(); }, 500);
+    //        }
+    //    };
+    //});
 
     echoApp.filter('startFrom', function() {
         return function(input, start) {
@@ -254,7 +320,30 @@ echoApp.config(['$routeProvider' ,function($routeProvider) {
 
 });
 
+ //firebase CONTROLLER!!!!
+
+ echoApp.controller('Chat', ['$scope', '$firebase',
+    function($scope, $firebase) {
+        // Andrew's firebase chat room
+        var ref = new Firebase('https://crackling-torch-9468.firebaseio.com/chat');
+      $scope.messages = $firebase(ref.limit(15));
+      $scope.username = 'Guest' + Math.floor(Math.random()*101);
+      //  $scope.username = ($cookieStore.get('username'));
+      //  $scope.username = 'bob';
+      $scope.addMessage = function() {
+        $scope.messages.$add({
+          from: $scope.username, content: $scope.message
+        });
+        $scope.message = "";
+      }}]);
+
+//Andrew Edit
+
+
+
+
  echoApp.controller('EchoController', function ($scope, $http) { // calling the app controller up to the http
 
  });
+
 
