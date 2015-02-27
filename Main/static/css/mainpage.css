@@ -1,13 +1,51 @@
-
-.contacts {
-    height: 1000px;
-    width: 250px;
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  height:100%;
+  padding:0px;
+  margin:0px;
 }
 
-.search-music {
-    text-align: center;
+a {
+  color: #00B7FF;
 }
 
-/*.navbar-search {*/
-    /*padding-left: 700px;*/
-/*}*/
+html
+{
+  height:100%;
+  padding:0px;
+  margin:0px;
+}
+
+audio-player .paused .play-text,
+audio-player .pause-text {
+    display:inline-block;
+}
+audio-player .play-text,
+audio-player .paused .pause-text {
+    display:none;
+}
+audio-player * {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+.albums {
+    margin:0;
+    padding:0;
+}
+
+.albums li {
+    list-style:none;
+    margin:10px;
+    display:inline-block;
+    width: 120px;
+    height: 120px;
+    background-color: #eee;
+    background-size: cover;
+    border: 1px solid #333;
+}
