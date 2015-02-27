@@ -1,4 +1,4 @@
-from friendship.models import Friend, FriendshipRequest
+from friendship.models import Friend, FriendshipRequest, FriendshipManager
 from Main.models import Track, Album, Playlist, UserPlaylistTrack, UserPicture, UserStatus
 
 from django.contrib.auth.models import User, Group
@@ -71,3 +71,4 @@ class UserPictureSerializer(serializers.ModelSerializer):
 class UserStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserStatus
+

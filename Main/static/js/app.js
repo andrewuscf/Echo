@@ -29,7 +29,7 @@ echoApp.config(['$httpProvider', function($httpProvider){
             })
         };
     }).
-     controller('authController', function($scope, api, $location, $rootScope) {
+     controller('authController', function($scope, api, $location, $rootScope, $cookieStore) {
         // Angular does not detect auto-fill or auto-complete. If the browser
         // autofills "username", Angular will be unaware of this and think
         // the $scope.username is blank. To workaround this we use the
@@ -50,6 +50,13 @@ echoApp.config(['$httpProvider', function($httpProvider){
                         $location.path('/main');
                         $rootScope.username = $scope.user;
                         $rootScope.id = $scope.id;
+
+                        // Daniel's stuff START
+                        //cookieStore adds the designated key/value pair into a cookie, allowing it to be picked up later
+                        $cookieStore.put('username',$scope.user);
+                        $cookieStore.put('id', $scope.id);
+                        // Daniel's stuff END
+
                     }).
                     catch(function(data){
                         // on incorrect username and password
@@ -98,7 +105,7 @@ echoApp.config(['$routeProvider' ,function($routeProvider) {
 
 }]);
 
- echoApp.controller('EchoAppCtrl',function($scope, $http ) {
+ echoApp.controller('EchoAppCtrl',function($scope, $http, $rootScope, $cookieStore) {
      var friendSort = function(data) {
          var userlog = null;
          var friend = null;
@@ -107,15 +114,61 @@ echoApp.config(['$routeProvider' ,function($routeProvider) {
          //console.log(obj_test.results);
 
      };
+
+     // Daniel's stuff START
+     $scope.findFriend = function() {
+         $http.get('/api/find_friend/?search='+$scope.friendSearch).
+             success(function(data, status, headers, config) {
+                 $scope.selectedFriends = data.results;
+                 console.log($scope.selectedFriends[0]);
+             })
+     };
+
+     $scope.id = $cookieStore.get('id');
+
+     // Function adds someone as your friend
+     $scope.addFriend = function(friend) {
+         $http.post('api/friend/', {to_user:friend.id, from_user:$scope.id}).
+             success(function(data, status, headers, config) {
+                 console.log("Success");
+             });
+        alert("Added a friend. Reload page to see in friends sidebar!");
+     };
+
+         // Our list of friends in the friends sidebar, will build at line 143
+    $scope.friends = [];
+     var fr = [];
+
+    // Here we get the cookie that we PUT, back in line 54
+    $scope.username = ($cookieStore.get('username'));
+    $http.get('/api/friend/?search='+$scope.username).
+        success(function(data, status, headers, config) {
+            //console.log(data.results);
+                for (var i=0; i < data.results.length; i ++) {
+                    //console.log(data.results[i].to_user);
+                    $http.get('/api/user/'+ data.results[i].to_user).
+                        success(function(data, status, headers, config) {
+                            //console.log(data.username);
+                            fr.push(data);
+                            $scope.friends = fr;
+                            //console.log($scope.friends);
+                        })
+                }
+        });
+     $scope.numbers=[1,2,3,4,5];
+    console.log($scope.numbers);
+
+     // Daniel's stuff END
+
      $scope.usernamefinal= $scope.username;
      $scope.idfinal = $scope.id;
 
-     $http.get('api/user/').success(function (data) {
-         //$scope.name = $rootScope.user;
-         $scope.name1 = data;
-         console.log($scope.name1)
-     });
-     $http.get('api/friend/').success(function (data) {
+     //$http.get('api/user/').success(function (data) {
+     //    //$scope.name = $rootScope.user;
+     //    $scope.name1 = data;
+     //    console.log($scope.name1)
+     //});
+     $http .get('api/friend/').success(function (data) {
          $scope.friends = data;
          $scope.friendslist = friendSort(data);
          //console.log($scope.friendslist)

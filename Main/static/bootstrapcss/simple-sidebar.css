@@ -43,7 +43,7 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    color: #5cb85c;
+    color: #6f3700;
     background-color: #269abc;
 }
 
@@ -55,7 +55,7 @@
 .sidebar-nav li a {
     display: block;
     text-decoration: none;
-    color: #5cb85c;
+    color: #843534;
 }
 
 .sidebar-nav li a:hover {
@@ -76,7 +76,7 @@
 }
 
 .sidebar-nav > .sidebar-brand a {
-    color: #5cb85c;
+    color: #6f3700;
 }
 
 .sidebar-nav > .sidebar-brand a:hover {

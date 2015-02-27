@@ -108,6 +108,15 @@ class UserStatusViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('user__username',)
 
+
+class FindFriendViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+
+    serializer_class = serializers.UserSerializer
+    queryset=User.objects.all()
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('username',)
+
 # class UserListAPIView(ListAPIView):
 #     model = User
 #     serializer_class = UserSerializer

@@ -14,6 +14,7 @@ router.register(r'friendship_request', views.FriendshipRequestViewSet)
 router.register(r'playlist_track', views.UserPlaylistTrackViewSet)
 router.register(r'picture', views.UserPictureViewSet)
 router.register(r'status', views.UserStatusViewSet)
+router.register(r'find_friend', views.FindFriendViewSet)
 
 # Wire up API using automatic URL routing.
 # Additionally, include login URLs for the browsable API
